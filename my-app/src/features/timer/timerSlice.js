@@ -34,6 +34,8 @@ export const { incrementBreak, decrementBreak, incrementFocus, decrementFocus } 
 // in the slice file. For example: `useSelector((state: RootState) => state.timer.value)`
 export const selectBreakTime = (state) => state.timer.breakTime;
 export const selectFocusTime = (state) => state.timer.focusTime;
+export const selectIsFocus = (state) => state.timer.isFocusTime;
+export const selectTimeElapsed = (state) => state.timer.timeElapsed;
 
 
 export default timerSlice.reducer;
