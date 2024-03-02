@@ -13,17 +13,11 @@ export const timerSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    incrementBreak: (state) => {
-      state.breakTime += 1;
+    setBreak: (state, action) => {
+      state.breakTime = action.payload;
     },
-    decrementBreak: (state) => {
-      state.breakTime -= 1;
-    },
-    incrementFocus: (state) => {
-      state.focusTime += 1;
-    },
-    decrementFocus: (state) => {
-      state.focusTime -= 1;
+    setFocus: (state, action) => {
+      state.focusTime = action.payload;
     },
     setTimeRemaining: (state, action) => {
       state.timeRemaining = action.payload;
@@ -37,10 +31,8 @@ export const timerSlice = createSlice({
   }
 });
 
-export const { incrementBreak, 
-                decrementBreak, 
-                incrementFocus, 
-                decrementFocus, 
+export const { setBreak, 
+                setFocus, 
                 setTimeRemaining,
                 togglePlay, 
                 toggleFocus } = timerSlice.actions;

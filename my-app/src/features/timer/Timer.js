@@ -53,31 +53,26 @@ export function Timer() {
   const adjustTime = (adjustment, type) => {
     if (!play) {
       // Check current time, max for each timer is 60 minutes
+      const currentTime = type === "break" ? breakTime : focusTime;
       switch (adjustment) {
         case "increment":
-          if (isFocus && type === "focus" && focusTime <= 59) {
-            dispatch(setTimeRemaining((focusTime + 1) * 60));
-          }
-          else if (!isFocus && type === "break" && breakTime <= 59) {
-            dispatch(setTimeRemaining((breakTime + 1) * 60));
-          }
-          if ((type === "break" && breakTime <= 59) || (type !== "break" && focusTime <= 59)) {
-            dispatch(type === "break" ? incrementBreak() : incrementFocus());
+          if (currentTime <= 59) {
+            dispatch(type === "break" ? setBreak(currentTime + 1) : setFocus(currentTime + 1));
+            if ((isFocus && type === "focus") || (!isFocus && type === "break")) {
+              dispatch(setTimeRemaining((currentTime + 1) * 60));
+            }
           }
           break;
-          case "decrement":
-            if (isFocus && type === "focus" && focusTime >= 2) {
-              dispatch(setTimeRemaining((focusTime - 1) * 60));
+        case "decrement":
+          if (currentTime >= 2) {
+            dispatch(type === "break" ? setBreak(currentTime - 1) : setFocus(currentTime - 1));
+            if ((isFocus && type === "focus") || (!isFocus && type === "break")) {
+              dispatch(setTimeRemaining((currentTime - 1) * 60));
             }
-            else if (!isFocus && type === "break" && breakTime >= 2) {
-              dispatch(setTimeRemaining((breakTime - 1) * 60));
-            }
-            if ((type === "break" && breakTime >= 2) || (type !== "break" && focusTime >= 2)) {
-              dispatch(type === "break" ? decrementBreak() : decrementFocus());
-            }
-            break;
-            default:
-              break;
+          }
+          break;
+        default:
+          break;
         }
       }
     }
