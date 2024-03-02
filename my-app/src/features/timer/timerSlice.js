@@ -3,8 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   breakTime: 5,
   focusTime: 25,
-  timeElapsed: 0,
-  isFocusTime: true
+  timeRemaining: 1500,
+  isFocusTime: true,
+  play: false
 };
 
 export const timerSlice = createSlice({
@@ -24,10 +25,25 @@ export const timerSlice = createSlice({
     decrementFocus: (state) => {
       state.focusTime -= 1;
     },
+    setTimeRemaining: (state, action) => {
+      state.timeRemaining = action.payload;
+    },
+    togglePlay: (state) => {
+      state.play = !state.play;
+    },
+    toggleFocus: (state) => {
+      state.isFocusTime = !state.isFocusTime;
+    }
   }
 });
 
-export const { incrementBreak, decrementBreak, incrementFocus, decrementFocus } = timerSlice.actions;
+export const { incrementBreak, 
+                decrementBreak, 
+                incrementFocus, 
+                decrementFocus, 
+                setTimeRemaining,
+                togglePlay, 
+                toggleFocus } = timerSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -35,7 +51,7 @@ export const { incrementBreak, decrementBreak, incrementFocus, decrementFocus } 
 export const selectBreakTime = (state) => state.timer.breakTime;
 export const selectFocusTime = (state) => state.timer.focusTime;
 export const selectIsFocus = (state) => state.timer.isFocusTime;
-export const selectTimeElapsed = (state) => state.timer.timeElapsed;
-
+export const selectTimeRemaining = (state) => state.timer.timeRemaining;
+export const selectPlay = (state) => state.timer.play;
 
 export default timerSlice.reducer;
