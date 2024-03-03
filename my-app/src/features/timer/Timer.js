@@ -101,41 +101,41 @@ export function Timer() {
           <h1 className="text-center">Pomodoro Timer</h1>
         </div>
         <div className="row justify-content-center">
-          <div className="col-4">
+          <div className="col-4 align-self-center">
             <div className="row">
               <h2 id="break-label" className="text-center">Break Length</h2>
             </div>
             <div className="row justify-content-center">
-              <div className="col-2 text-end">
-                <button id="break-decrement" onClick={() => {adjustTime("decrement", "break")}}>
+              <div className="col-2 text-end align-self-center">
+                <button id="break-decrement" className={styles.buttonStyle} onClick={() => {adjustTime("decrement", "break")}}>
                   <FontAwesomeIcon icon={faArrowDown}></FontAwesomeIcon>
                 </button>
               </div>
-              <div className="col-4">
+              <div className="col-4 align-self-center">
                 <h3 id="break-length" className="text-center">{breakTime}</h3>
               </div>
-              <div className="col-2 text-left">
-                <button id="break-increment" onClick={() => {adjustTime("increment", "break")}}>
+              <div className="col-2 text-left align-self-center">
+                <button id="break-increment" className={styles.buttonStyle} onClick={() => {adjustTime("increment", "break")}}>
                   <FontAwesomeIcon icon={faArrowUp}></FontAwesomeIcon>
                 </button>
               </div>
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-4 align-self-center">
             <div className="row">
               <h2 id="session-label" className="text-center">Session Length</h2>
             </div>
             <div className="row justify-content-center">
-              <div className="col-2 text-end">
-                <button id="session-decrement" className="" onClick={() => {adjustTime("decrement", "focus")}}>
+              <div className="col-2 text-end align-self-center">
+                <button id="session-decrement" className={styles.buttonStyle} onClick={() => {adjustTime("decrement", "focus")}}>
                   <FontAwesomeIcon icon={faArrowDown}></FontAwesomeIcon>
                 </button>
               </div>
-              <div className="col-4">
+              <div className="col-4 align-self-center">
                 <h3 id="session-length" className="text-center">{focusTime}</h3>
               </div>
-              <div className="col-2 text-left">
-                <button id="session-increment" className="" onClick={() => {adjustTime("increment", "focus")}}>
+              <div className="col-2 text-left align-self-center">
+                <button id="session-increment" className={styles.buttonStyle} onClick={() => {adjustTime("increment", "focus")}}>
                   <FontAwesomeIcon icon={faArrowUp}></FontAwesomeIcon>
                 </button>
               </div>
@@ -143,7 +143,7 @@ export function Timer() {
           </div>
         </div>
         <div className="row justify-content-center">
-          <div className="col-4 text-center">
+          <div className="col-4 text-center align-self-center">
             <div>
               <h2 id="timer-label">{isFocus ? "Session" : "Break"}</h2>
               <h1 id="time-left">{formatTime(timeRemaining)}</h1>
@@ -151,14 +151,14 @@ export function Timer() {
           </div>
         </div>
         <div className="row justify-content-center">
-          <div className="col-1 text-center">
-            <button id="start_stop" onClick={() => dispatch(togglePlay())}>
+          <div className="col-1 text-center align-self-center">
+            <button id="start_stop" className={styles.buttonStyle} onClick={() => dispatch(togglePlay())}>
               <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
               <FontAwesomeIcon icon={faPause}></FontAwesomeIcon>
             </button>
           </div>
-          <div className="col-1 text-center">
-           <button id="reset" onClick={() => {dispatch(setDefaults()); ref.current.pause(); ref.current.currentTime = 0;}}>
+          <div className="col-1 text-center align-self-center">
+           <button id="reset" className={styles.buttonStyle} onClick={() => {dispatch(setDefaults()); ref.current.pause(); ref.current.currentTime = 0;}}>
             <FontAwesomeIcon icon={faRepeat}></FontAwesomeIcon>
            </button>
           </div>
