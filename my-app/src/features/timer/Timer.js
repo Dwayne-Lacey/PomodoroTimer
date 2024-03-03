@@ -1,10 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { 
-  incrementBreak, 
-  decrementBreak,
-  incrementFocus,
-  decrementFocus,
+  setBreak, 
+  setFocus,
   selectBreakTime,
   selectFocusTime,
   selectIsFocus,
@@ -12,7 +10,8 @@ import {
   setTimeRemaining,
   selectPlay,
   togglePlay,
-  toggleFocus
+  toggleFocus,
+  setDefaults
 } from './timerSlice';
 import styles from './Timer.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -141,7 +140,7 @@ export function Timer() {
         </div>
         <div className="row">
           <button onClick={() => dispatch(togglePlay())}>Start/Pause</button>
-          <button>Reset</button>
+          <button onClick={() => dispatch(setDefaults())}>Reset</button>
         </div>
       </div>
     </div>

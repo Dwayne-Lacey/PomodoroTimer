@@ -27,6 +27,13 @@ export const timerSlice = createSlice({
     },
     toggleFocus: (state) => {
       state.isFocusTime = !state.isFocusTime;
+    },
+    setDefaults: (state) => {
+      state.breakTime = 5;
+      state.focusTime = 25;
+      state.timeRemaining = 1500;
+      state.isFocusTime = true;
+      state.play = false;
     }
   }
 });
@@ -35,6 +42,7 @@ export const { setBreak,
                 setFocus, 
                 setTimeRemaining,
                 togglePlay, 
+                setDefaults,
                 toggleFocus } = timerSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
