@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { 
   setBreak, 
@@ -15,7 +15,7 @@ import {
 } from './timerSlice';
 import styles from './Timer.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { faArrowDown, faArrowUp, faPlay, faPause, faRepeat } from '@fortawesome/free-solid-svg-icons'
 
 export function Timer() {
   const breakTime = useSelector(selectBreakTime);
@@ -23,6 +23,7 @@ export function Timer() {
   const isFocus = useSelector(selectIsFocus);
   const timeRemaining = useSelector(selectTimeRemaining);
   const play = useSelector(selectPlay);
+  const ref = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -36,14 +37,23 @@ export function Timer() {
 
   const getTimeLeft = useCallback(() => {
     if (play) {
-      console.log("break time is", breakTime);
-      console.log("focus time is", focusTime);
       if (timeRemaining === 0) {
         dispatch(setTimeRemaining(isFocus ? breakTime * 60 : focusTime * 60))
         dispatch(toggleFocus());
       }
       else {
         dispatch(setTimeRemaining(timeRemaining - 1));
+      }
+      if (timeRemaining === 1) {
+        let playPromise = ref.current.play();
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+
+          })
+          .catch(error => {
+              console.log("Playback has errored.");
+          });
+        }
       }
     }
   }, [breakTime,dispatch,focusTime,isFocus,timeRemaining,play]);
@@ -93,19 +103,19 @@ export function Timer() {
         <div className="row justify-content-center">
           <div className="col-4">
             <div className="row">
-              <h2 className="text-center">Break Length</h2>
+              <h2 id="break-label" className="text-center">Break Length</h2>
             </div>
             <div className="row justify-content-center">
               <div className="col-2 text-end">
-                <button onClick={() => {adjustTime("decrement", "break")}}>
+                <button id="break-decrement" onClick={() => {adjustTime("decrement", "break")}}>
                   <FontAwesomeIcon icon={faArrowDown}></FontAwesomeIcon>
                 </button>
               </div>
               <div className="col-4">
-                <h3 className="text-center">{breakTime}</h3>
+                <h3 id="break-length" className="text-center">{breakTime}</h3>
               </div>
               <div className="col-2 text-left">
-                <button onClick={() => {adjustTime("increment", "break")}}>
+                <button id="break-increment" onClick={() => {adjustTime("increment", "break")}}>
                   <FontAwesomeIcon icon={faArrowUp}></FontAwesomeIcon>
                 </button>
               </div>
@@ -113,36 +123,52 @@ export function Timer() {
           </div>
           <div className="col-4">
             <div className="row">
-              <h2 className="text-center">Session Length</h2>
+              <h2 id="session-label" className="text-center">Session Length</h2>
             </div>
             <div className="row justify-content-center">
               <div className="col-2 text-end">
-                <button className="" onClick={() => {adjustTime("decrement", "focus")}}>
+                <button id="session-decrement" className="" onClick={() => {adjustTime("decrement", "focus")}}>
                   <FontAwesomeIcon icon={faArrowDown}></FontAwesomeIcon>
                 </button>
               </div>
               <div className="col-4">
-                <h3 className="text-center">{focusTime}</h3>
+                <h3 id="session-length" className="text-center">{focusTime}</h3>
               </div>
               <div className="col-2 text-left">
-                <button className="" onClick={() => {adjustTime("increment", "focus")}}>
+                <button id="session-increment" className="" onClick={() => {adjustTime("increment", "focus")}}>
                   <FontAwesomeIcon icon={faArrowUp}></FontAwesomeIcon>
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-4">
-            <h2>{isFocus ? "Session" : "Break"}</h2>
-            <h1>{formatTime(timeRemaining)}</h1>
+        <div className="row justify-content-center">
+          <div className="col-4 text-center">
+            <div>
+              <h2 id="timer-label">{isFocus ? "Session" : "Break"}</h2>
+              <h1 id="time-left">{formatTime(timeRemaining)}</h1>
+            </div>
           </div>
         </div>
-        <div className="row">
-          <button onClick={() => dispatch(togglePlay())}>Start/Pause</button>
-          <button onClick={() => dispatch(setDefaults())}>Reset</button>
+        <div className="row justify-content-center">
+          <div className="col-1 text-center">
+            <button id="start_stop" onClick={() => dispatch(togglePlay())}>
+              <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+              <FontAwesomeIcon icon={faPause}></FontAwesomeIcon>
+            </button>
+          </div>
+          <div className="col-1 text-center">
+           <button id="reset" onClick={() => {dispatch(setDefaults()); ref.current.pause(); ref.current.currentTime = 0;}}>
+            <FontAwesomeIcon icon={faRepeat}></FontAwesomeIcon>
+           </button>
+          </div>
         </div>
       </div>
+      <audio
+            id="beep"
+            src="https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav"
+            ref={ref}
+            />
     </div>
   );
 }
